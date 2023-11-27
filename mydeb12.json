@@ -3,7 +3,7 @@
    {
     "type": "qemu",
     "iso_url": "https://cdimage.debian.org/cdimage/cloud/bookworm/20231013-1532/debian-12-generic-amd64-20231013-1532.qcow2",
-    "iso_checksum": "6b55e88b027c14da1b55c85a25a9f7069d4560a8fdb2d948c986a585db469728a06d2c528303e34bb62d8b2984def38fd9ddfc00965846ff6e05b01d6e883bfe",
+    "iso_checksum": "b2ddc01e8d13dabbcfde6661541aae92219be2d442653950f0e44613ddebaeb80dc7a83e0202c5509c5e72f4bd1f4edee4c83f35191f2562b3f31e20e9e87ec2",
     "disk_image": true,
     "disk_size": "3G",
     "format": "qcow2",
