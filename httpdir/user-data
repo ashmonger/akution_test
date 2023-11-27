@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+export DEBIAN_FRONTEND=noninteractive
+apt-get -y update
+apt-get -y install linux-image-amd64
+apt-get -y autoremove
+apt-get clean
+shutdown -Hr now
