@@ -12,5 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build with packer
-        run: sudo bash builder.sh
+        run: |
+          sudo apt install -y --no-install-recommends packer qemu-system-x86 qemu-utils
+          PACKER_LOG=1 packer build mydeb12.json
+          mv output-qemu/packer-qemu output-qemu/debian12custom.qcow2
+      - name: upload image
+        uses: actions/upload-artifact@v3
+        with:
+          name: image
+          path: output-qemu/debian12custom.qcow2
 
