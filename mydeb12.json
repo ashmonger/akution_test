@@ -1,21 +1,68 @@
 {
- "builders": [
-   {
-    "type": "qemu",
-    "iso_url": "https://cdimage.debian.org/cdimage/cloud/bookworm/20231013-1532/debian-12-generic-amd64-20231013-1532.qcow2",
-    "iso_checksum": "b2ddc01e8d13dabbcfde6661541aae92219be2d442653950f0e44613ddebaeb80dc7a83e0202c5509c5e72f4bd1f4edee4c83f35191f2562b3f31e20e9e87ec2",
-    "disk_image": true,
-    "disk_size": "3G",
-    "format": "qcow2",
-    "headless": "true",
-    "boot_wait": -1,
-    "http_directory": "httpdir",
-    "communicator": "none",
-    "qemuargs": [
-     ["-serial", "stdio"],
-     ["-smbios", "type=1,serial=ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/"]
+    "builders": [
+        {
+            "name": "10_generator",
+            "type": "file",
+            "content": "dummy",
+            "target": "dummy_file"
+        },
+        {
+            "name": "20_builder",
+            "type": "qemu",
+            "iso_url": "https://cdimage.debian.org/cdimage/cloud/bookworm/latest/debian-12-generic-amd64.qcow2",
+            "iso_checksum": "file:https://cdimage.debian.org/cdimage/cloud/bookworm/latest/SHA512SUMS",
+            "disk_image": true,
+            "disk_size": "3G",
+            "format": "qcow2",
+            "headless": "true",
+            "boot_wait": -1,
+            "communicator": "ssh",
+            "ssh_username": "patient0",
+            "ssh_clear_authorized_keys": true,
+            "ssh_password": "packer",
+            "temporary_key_pair_type": "ed25519",
+            "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+            "output_directory": "output",
+            "vm_name": "deb12.qcow2",    
+            "qemuargs": [
+                [
+                    "-serial",
+                    "stdio"
+                ],
+                [
+                    "-m",
+                    "512"
+                ],
+                [
+                    "-cdrom",
+                    "cidata.iso"
+                ]
+            ]
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell-local",
+            "inline": "cd httpdir && genisoimage -output ../cidata.iso -input-charset utf-8 -volid cidata -joliet -r user-data meta-data",
+            "only": [
+                "10_generator"
+            ]
+        },
+        {
+            "only": [
+                "20_builder"
+            ],
+            "type": "file",
+            "source": "files/make_image_bootable.sh",
+            "destination": "/tmp/make_image_bootable.sh"
+        },
+        {
+            "only": [
+                "20_builder"
+            ],
+            "type": "shell",
+            "inline": "sudo -S mkdir /root/.ovh/ && sudo -S mv /tmp/make_image_bootable.sh /root/.ovh/ && sudo -S chmod -R +x /root/.ovh/",
+            "pause_before": "5s"
+        }
     ]
-   }
- ]
 }
-

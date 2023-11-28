@@ -1,8 +1,9 @@
-#!/bin/bash
-set -e
-export DEBIAN_FRONTEND=noninteractive
-apt-get -y update
-apt-get -y install linux-image-amd64
-apt-get -y autoremove
-apt-get clean
-shutdown -HP now
+#cloud-config
+ssh_pwauth: True
+users:
+  - name: patient0
+    plain_text_passwd: packer
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, sudo
+    shell: /bin/bash
+    lock_passwd: false
