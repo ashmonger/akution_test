@@ -49,6 +49,12 @@
             ]
         },
         {
+            "script": "scripts/pre-install-baremetal.sh",
+            "type": "shell",
+            "execute_command": "chmod +x {{ .Path }} && sudo {{ .Path }}",
+            "only": ["20_builder"]
+          },
+        {
             "only": [
                 "20_builder"
             ],

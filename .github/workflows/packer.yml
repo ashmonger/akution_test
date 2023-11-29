@@ -17,7 +17,7 @@ jobs:
           sudo apt install -y --no-install-recommends packer qemu-system-x86 \
             qemu-utils guestfs-tools genisoimage
           PACKER_LOG=1 packer build mydeb12.json
-          sha512sum output/deb12.qcow2 > output/SHA512SUMS
+          cd output; sha512sum deb12.qcow2 > SHA512SUMS
       - name: GH Release
         uses: softprops/action-gh-release@v0.1.15
         if: startsWith(github.ref, 'refs/tags/')
