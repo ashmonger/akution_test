@@ -13,6 +13,7 @@
             "iso_checksum": "file:https://cdimage.debian.org/cdimage/cloud/bullseye/latest/SHA512SUMS",
             "disk_image": true,
             "disk_size": "3G",
+            "disk_compression": true,
             "format": "qcow2",
             "headless": "true",
             "boot_wait": -1,
