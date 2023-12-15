@@ -14,9 +14,14 @@ cp /usr/share/grub/default/grub /etc/default/grub
 
 # Add contrib to allow ZFS installation
 # Add non-free-firmware for AMD and Intel microcodes
-sed -i "s/\bmain\b/& contrib non-free-firmware/" /etc/apt/sources.list.d/debian.sources
+sed -i "s/\bmain\b/& contrib non-free/" /etc/apt/sources.list
 
 apt-get update
+
+kernel=$(apt-cache search linux-image-6 | grep -vE 'rt|cloud|unsigned|headers|dbg' | awk '{ print $1 }')
+
+apt-get install -y "${kernel}"
+
 apt-get -y install --no-install-recommends mdadm lvm2 patch btrfs-progs amd64-microcode intel-microcode
 # We will install these in make_image_bootable.sh and only when ZFS is used
 # linux-headers-amd64 needs to be manually specified because dkms only recommends it

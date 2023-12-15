@@ -9,8 +9,8 @@
         {
             "name": "20_builder",
             "type": "qemu",
-            "iso_url": "https://cdimage.debian.org/cdimage/cloud/bookworm/latest/debian-12-generic-amd64.qcow2",
-            "iso_checksum": "file:https://cdimage.debian.org/cdimage/cloud/bookworm/latest/SHA512SUMS",
+            "iso_url": "https://cdimage.debian.org/cdimage/cloud/bullseye/latest/debian-11-generic-amd64.qcow2",
+            "iso_checksum": "file:https://cdimage.debian.org/cdimage/cloud/bullseye/latest/SHA512SUMS",
             "disk_image": true,
             "disk_size": "3G",
             "format": "qcow2",
@@ -23,7 +23,7 @@
             "temporary_key_pair_type": "ed25519",
             "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
             "output_directory": "output",
-            "vm_name": "deb12.qcow2",    
+            "vm_name": "deb11k6.qcow2",    
             "qemuargs": [
                 [
                     "-serial",
@@ -43,6 +43,7 @@
     "provisioners": [
         {
             "type": "shell-local",
+            "inline_shebang": "/bin/bash -xe",
             "inline": "cd httpdir && genisoimage -output ../cidata.iso -input-charset utf-8 -volid cidata -joliet -r user-data meta-data",
             "only": [
                 "10_generator"
