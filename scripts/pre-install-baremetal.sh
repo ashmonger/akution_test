@@ -20,7 +20,7 @@ apt-get update
 
 kernel=$(apt-cache search linux-image-6 | grep -vE 'rt|cloud|unsigned|headers|dbg' | awk '{ print $1 }')
 
-apt-get install -y "${kernel}"
+apt-get -y install --no-install-recommends "${kernel}"
 
 apt-get -y install --no-install-recommends mdadm lvm2 patch btrfs-progs amd64-microcode intel-microcode
 # We will install these in make_image_bootable.sh and only when ZFS is used
@@ -33,6 +33,11 @@ apt-get -y install --no-install-recommends --download-only grub-efi-amd64
 apt-get -y install --no-install-recommends --download-only grub-pc
 # Make sure grub-efi-amd64 won't change the boot order.
 echo "grub-efi-amd64 grub2/update_nvram boolean false" | debconf-set-selections
+
+# Cleanup
+apt-get -y autoremove
+apt-get -y clean
+apt-get -y autoclean
 
 # Disable some cloud-init options:
 # grub-dpkg sets an incorrect value to "grub-pc/install_devices".
