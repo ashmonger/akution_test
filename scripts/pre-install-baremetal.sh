@@ -34,11 +34,6 @@ apt-get -y install --no-install-recommends --download-only grub-pc
 # Make sure grub-efi-amd64 won't change the boot order.
 echo "grub-efi-amd64 grub2/update_nvram boolean false" | debconf-set-selections
 
-# Cleanup
-apt-get -y autoremove
-apt-get -y clean
-apt-get -y autoclean
-
 # Disable some cloud-init options:
 # grub-dpkg sets an incorrect value to "grub-pc/install_devices".
 # growpart and resizefs are not needed and can cause problems with ZFS partitions.
