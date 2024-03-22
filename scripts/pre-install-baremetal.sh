@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -x
 set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
@@ -18,7 +19,7 @@ sed -i "s/\bmain\b/& contrib non-free/" /etc/apt/sources.list
 
 apt-get update
 
-kernel=$(apt-cache search linux-image-6 | grep -vE 'rt|cloud|unsigned|headers|dbg' | awk '{ print $1 }')
+kernel=$(apt-cache search linux-image-6 | grep -vE 'rt|cloud|unsigned|headers|dbg' | awk '{ print $1 }' | sort -r | head -1)
 
 apt-get -y install --no-install-recommends "${kernel}"
 

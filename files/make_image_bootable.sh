@@ -13,8 +13,16 @@
 ######################################################
 
 set -euo pipefail
+set -x
+
+rm -fr /etc/resolv.conf
+echo "nameserver 213.186.33.99" >resolv.conf
 
 export DEBIAN_FRONTEND=noninteractive
+
+#### TEST ####
+apt update
+##############
 
 # This script will run inside the newly installed system, no need to call chroot
 
